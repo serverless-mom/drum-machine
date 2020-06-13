@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS Drum Kit</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 
@@ -45,7 +47,16 @@
       <kbd>L</kbd>
       <span class="sound">tink</span>
     </div>
+
   </div>
+
+  <div class="transport">
+    <button id="play">
+
+      ⏯️
+    </button>
+  </div>
+
 
   <audio data-key="65" src="sounds/clap.wav"></audio>
   <audio data-key="83" src="sounds/hihat.wav"></audio>
@@ -57,27 +68,64 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
-<script>
-  function removeTransition(e) {
-    if (e.propertyName !== 'transform') return;
-    e.target.classList.remove('playing');
-  }
+  <script>
+    //TODO
+    //the button is ugly
+    //change background image
+    //tempo setting
+    let playing = false;
+    function removeTransition(key) {
+      key.classList.remove('playing');
+    }
 
-  function playSound(e) {
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
-    if (!audio) return;
+    function keyHandler(e) {
+      playSound(e.keyCode);
+    }
 
-    key.classList.add('playing');
-    audio.currentTime = 0;
-    audio.play();
-  }
+    function playSound(keyCode) {
+      const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
+      const key = document.querySelector(`div[data-key="${keyCode}"]`);
+      if (!audio) return;
 
-  const keys = Array.from(document.querySelectorAll('.key'));
-  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-  window.addEventListener('keydown', playSound);
-</script>
+      key.classList.add('playing');
+      audio.currentTime = 0;
+      audio.play();
+      window.setTimeout(function () { removeTransition(key) }, 50) //remove the transition classes
+
+    }
+
+    const keys = Array.from(document.querySelectorAll('.key'));
+
+    const sequence = ["65", "65", "65", "71"]
+
+    function sequencer(sequence, position) {
+      if (position >= sequence.length) {
+        position = 0
+      }
+      if (playing) {     
+         playSound(sequence[position]);
+
+        setTimeout(function () { sequencer(sequence, position + 1) }, 1000);
+      }
+
+    }
+
+    window.addEventListener('keydown', keyHandler);
+    const playButton = document.querySelector('button#play');
+    playButton.addEventListener('click', event => {
+      if (!playing) { 
+        playing = true;
+        sequencer(sequence, 0);
+       } else { playing = false }
+
+    });
+
+
+
+
+  </script>
 
 
 </body>
+
 </html>
