@@ -1,6 +1,6 @@
 html {
   font-size: 10px;
-  background: url(https://i.imgur.com/b9r5sEL.jpg) bottom center;
+  background: url(lastfirst.jpg) bottom center;
   background-size: cover;
 }
 
@@ -133,3 +133,7 @@ kbd {
 .sequence {
   margin-left:10%;
 }
+
+/* .sequence label{
+  visibility:hidden;
+} */

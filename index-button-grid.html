@@ -50,23 +50,23 @@
 
   </div>
   <div class="sequence">
-    <label class="container">One
-      <input type="checkbox" checked="checked">
+    <label class="container">Clap
+      <input type="checkbox" id="check1" data-instrument="65">
       <span class="checkmark"></span>
     </label>
-    
-    <label class="container">Two
-      <input type="checkbox">
+
+    <label class="container">HiHat
+      <input type="checkbox" id="check2" data-instrument="83">
       <span class="checkmark"></span>
     </label>
-    
-    <label class="container">Three
-      <input type="checkbox">
+
+    <label class="container">Kick
+      <input type="checkbox" id="check3" data-instrument="68">
       <span class="checkmark"></span>
     </label>
-    
-    <label class="container">Four
-      <input type="checkbox">
+
+    <label class="container">Openhat
+      <input type="checkbox" id="check4" data-instrument="70">
       <span class="checkmark"></span>
     </label></div>
   <div class="transport">
@@ -90,8 +90,7 @@
 
   <script>
     //TODO
-    //the button is ugly
-    //change background image
+
     //tempo setting
     let playing = false;
     function removeTransition(key) {
@@ -101,6 +100,8 @@
     function keyHandler(e) {
       playSound(e.keyCode);
     }
+
+    let instrumentArray = [];
 
     function playSound(keyCode) {
       const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
@@ -122,8 +123,8 @@
       if (position >= sequence.length) {
         position = 0
       }
-      if (playing) {     
-         playSound(sequence[position]);
+      if (playing) {
+        playSound(sequence[position]);
 
         setTimeout(function () { sequencer(sequence, position + 1) }, 1000);
       }
@@ -133,11 +134,19 @@
     window.addEventListener('keydown', keyHandler);
     const playButton = document.querySelector('button#play');
     playButton.addEventListener('click', event => {
-      if (!playing) { 
+      instrumentArray = [];
+
+      /* if (!playing) { 
         playing = true;
         sequencer(sequence, 0);
-       } else { playing = false }
-
+       } else { playing = false } */
+      let checkBoxArray = document.getElementsByTagName("INPUT")
+      for (let index = 0; index < checkBoxArray.length; index++) {
+        if (checkBoxArray[index].checked) {
+          instrumentArray.push(checkBoxArray[index].dataset.instrument)
+        }
+      }
+        console.log(instrumentArray)
     });
 
 
